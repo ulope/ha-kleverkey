@@ -13,6 +13,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.const import (
+    PERCENTAGE,
     SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
     EntityCategory,
     UnitOfTemperature,
@@ -56,6 +57,14 @@ LOCK_DESCRIPTIONS: tuple[KleverKeyLockSensorDescription, ...] = (
         device_class=SensorDeviceClass.ENUM,
         options=PHYSICAL_STATE_OPTIONS,
         value_fn=_physical_state,
+    ),
+    KleverKeyLockSensorDescription(
+        key="battery",
+        device_class=SensorDeviceClass.BATTERY,
+        native_unit_of_measurement=PERCENTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda lock: lock.battery_level,
     ),
     KleverKeyLockSensorDescription(
         key="signal_strength",

@@ -19,6 +19,7 @@ from .const import LOCK
         ("sensor.front_door_physical_state", "locked"),
         ("sensor.front_door_weekly_openings", "12.5"),
         ("sensor.front_door_controller_temperature", "21"),
+        ("sensor.front_door_battery", "100"),
         ("sensor.front_door_signal_strength", "-67"),
         ("sensor.front_door_last_activity", "2026-02-03T05:06:07+00:00"),
         ("sensor.front_door_connected_since", "2026-02-03T04:05:06+00:00"),
@@ -111,3 +112,27 @@ async def test_physical_state_options(
 
     state = hass.states.get("sensor.front_door_physical_state")
     assert state.attributes["options"] == ["open", "closed", "locked"]
+
+
+async def test_battery_level(
+    hass: HomeAssistant, mock_api: aioresponses, mock_config_entry: MockConfigEntry
+) -> None:
+    """The powerSource field is exposed as a battery percentage."""
+    await setup_integration(hass, mock_config_entry)
+
+    state = hass.states.get("sensor.front_door_battery")
+    assert state.state == "100"
+    assert state.attributes["device_class"] == "battery"
+    assert state.attributes["unit_of_measurement"] == "%"
+
+
+async def test_battery_level_absent(
+    hass: HomeAssistant, mock_config_entry: MockConfigEntry
+) -> None:
+    """A lock that reports no powerSource has an unknown battery level."""
+    lock = {key: value for key, value in LOCK.items() if key != "powerSource"}
+    with aioresponses() as mocked:
+        mock_api_responses(mocked, locks=[lock])
+        await setup_integration(hass, mock_config_entry)
+
+    assert hass.states.get("sensor.front_door_battery").state == STATE_UNKNOWN

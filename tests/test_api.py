@@ -78,6 +78,8 @@ async def test_get_locks_parses_payload(
     assert lock.physical_state is LockPhysicalState.LOCKED
     assert lock.state is LockState.BATTERY_LOW
     assert lock.ble_rssi == -67
+    assert lock.battery_level == 100
+    assert lock.firmware_version_string == "1.7.1"
     assert lock.weekly_opening_count == 12.5
     assert lock.date_last_activity == datetime(2026, 2, 3, 5, 6, 7, tzinfo=UTC)
     assert lock.date_disconnected is None
@@ -95,6 +97,7 @@ async def test_get_gateways_parses_payload(
     assert gateway.type is GatewayType.WIFI
     assert gateway.model == "Wi-Fi Gateway"
     assert gateway.wifi_rssi == -55
+    assert gateway.firmware_version_string == "1.2.1"
 
 
 async def test_unknown_enum_values_are_tolerated(hass: HomeAssistant) -> None:

@@ -33,9 +33,7 @@ class KleverKeyLockEntity(CoordinatorEntity[KleverKeyDataUpdateCoordinator]):
             model=lock.model,
             name=lock.name,
             serial_number=lock.hex_id,
-            sw_version=str(lock.firmware_version)
-            if lock.firmware_version is not None
-            else None,
+            sw_version=lock.firmware_version_string,
         )
         if lock.gateway_id is not None:
             self._attr_device_info["via_device"] = (
@@ -77,9 +75,7 @@ class KleverKeyGatewayEntity(CoordinatorEntity[KleverKeyDataUpdateCoordinator]):
             model=gateway.model,
             name=gateway.name,
             serial_number=gateway.hex_id,
-            sw_version=str(gateway.firmware_version)
-            if gateway.firmware_version is not None
-            else None,
+            sw_version=gateway.firmware_version_string,
         )
 
     @property

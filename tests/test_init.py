@@ -72,11 +72,12 @@ async def test_devices(
     assert gateway is not None
     assert gateway.name == "Hallway Gateway"
     assert gateway.model == "Wi-Fi Gateway"
-    assert gateway.sw_version == "4321"
+    assert gateway.sw_version == "1.2.1"
 
     assert lock is not None
     assert lock.name == "Front Door"
     assert lock.model == "Lock B1"
+    assert lock.sw_version == "1.7.1"
     assert lock.via_device_id == gateway.id
 
 

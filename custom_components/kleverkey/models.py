@@ -88,6 +88,17 @@ def _parse_float(value: Any) -> float | None:
     return float(value)
 
 
+def _format_firmware_version(value: int | None) -> str | None:
+    """Format a packed firmware version as ``major.minor.patch``.
+
+    The API packs versions as ``major << 16 | minor << 8 | patch``, so the
+    reported 67329 (0x10701) is version 1.7.1.
+    """
+    if value is None:
+        return None
+    return f"{value >> 16}.{(value >> 8) & 0xFF}.{value & 0xFF}"
+
+
 def _parse_enum[EnumT: IntEnum](enum: type[EnumT], value: Any) -> EnumT | None:
     """Return ``value`` as an enum member, tolerating unknown values."""
     if (parsed := _parse_int(value)) is None:
@@ -131,6 +142,7 @@ class Lock:
     firmware_update_available: bool | None
     is_connected: bool
     battery_change_recommended: bool
+    battery_level: int | None
     ble_rssi: int | None
     die_temperature: int | None
     weekly_opening_count: float | None
@@ -159,6 +171,8 @@ class Lock:
             firmware_update_available=data.get("isFirmwareUpdateAvailable"),
             is_connected=bool(data.get("isConnected")),
             battery_change_recommended=bool(data.get("batteryChangeRecommended")),
+            # "powerSource" is the remaining battery charge in percent.
+            battery_level=_parse_int(data.get("powerSource")),
             ble_rssi=_parse_int(data.get("bleRssi")),
             die_temperature=_parse_int(data.get("dieTemperature")),
             weekly_opening_count=_parse_float(data.get("weeklyOpeningCount")),
@@ -175,6 +189,11 @@ class Lock:
         if self.type is None:
             return None
         return LOCK_TYPE_NAMES.get(self.type, self.type.name)
+
+    @property
+    def firmware_version_string(self) -> str | None:
+        """Return the firmware version as ``major.minor.patch``."""
+        return _format_firmware_version(self.firmware_version)
 
 
 @dataclass(frozen=True, slots=True)
@@ -219,3 +238,8 @@ class Gateway:
         if self.type is None:
             return None
         return GATEWAY_TYPE_NAMES.get(self.type, self.type.name)
+
+    @property
+    def firmware_version_string(self) -> str | None:
+        """Return the firmware version as ``major.minor.patch``."""
+        return _format_firmware_version(self.firmware_version)

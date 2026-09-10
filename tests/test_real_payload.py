@@ -118,6 +118,9 @@ async def test_parses_real_locks(hass: HomeAssistant) -> None:
     assert toilette.physical_state is LockPhysicalState.CLOSED
     assert toilette.state is LockState.CLOSED
     assert toilette.die_temperature == 18
+    assert toilette.battery_level == 100
+    # 67329 == 0x10701, packed as major << 16 | minor << 8 | patch.
+    assert toilette.firmware_version_string == "1.7.1"
     assert toilette.weekly_opening_count == 26.1
     assert toilette.date_last_activity == datetime(
         2026, 9, 10, 13, 40, 20, 200000, tzinfo=UTC

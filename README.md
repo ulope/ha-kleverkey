@@ -65,6 +65,7 @@ are shown behind that gateway in the device tree.
 | Emergency | `binary_sensor` | Diagnostic, on while the lock signals an emergency |
 | Update | `binary_sensor` | Diagnostic, on when a firmware update is available |
 | Physical state | `sensor` | `open`, `closed` or `locked` |
+| Battery | `sensor` | Diagnostic, remaining charge in percent |
 | Weekly openings | `sensor` | |
 | Last activity | `sensor` | Diagnostic timestamp |
 | Controller temperature | `sensor` | Diagnostic, whole °C — the lock's controller, not ambient |
