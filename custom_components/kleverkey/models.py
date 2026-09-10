@@ -147,7 +147,9 @@ class Lock:
         return cls(
             id=lock_id,
             organization_id=int(data["organizationId"]),
-            name=data.get("displayName") or data.get("name") or f"Lock {lock_id}",
+            # ``displayName`` appends the hex ID, e.g. "Front Door (C0E7…)",
+            # so the plain name makes the better device name.
+            name=data.get("name") or data.get("displayName") or f"Lock {lock_id}",
             hex_id=data.get("lockHexId"),
             gateway_id=_parse_int(data.get("gatewayId")),
             type=_parse_enum(LockType, data.get("type")),
@@ -199,7 +201,7 @@ class Gateway:
         return cls(
             id=gateway_id,
             organization_id=int(data["organizationId"]),
-            name=data.get("displayName") or data.get("name") or f"Gateway {gateway_id}",
+            name=data.get("name") or data.get("displayName") or f"Gateway {gateway_id}",
             hex_id=data.get("gatewayHexId"),
             type=_parse_enum(GatewayType, data.get("type")),
             firmware_version=_parse_int(data.get("firmwareVersion")),

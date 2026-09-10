@@ -63,16 +63,17 @@ LOCK_DESCRIPTIONS: tuple[KleverKeyLockSensorDescription, ...] = (
         native_unit_of_measurement=SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
         value_fn=lambda lock: lock.ble_rssi,
     ),
     KleverKeyLockSensorDescription(
         key="temperature",
+        translation_key="controller_temperature",
         device_class=SensorDeviceClass.TEMPERATURE,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         state_class=SensorStateClass.MEASUREMENT,
+        # The API reports the controller die temperature as whole degrees.
+        suggested_display_precision=0,
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
         value_fn=lambda lock: lock.die_temperature,
     ),
     KleverKeyLockSensorDescription(
@@ -94,7 +95,6 @@ LOCK_DESCRIPTIONS: tuple[KleverKeyLockSensorDescription, ...] = (
         translation_key="connected_since",
         device_class=SensorDeviceClass.TIMESTAMP,
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
         value_fn=lambda lock: lock.date_connected,
     ),
     KleverKeyLockSensorDescription(
@@ -102,7 +102,6 @@ LOCK_DESCRIPTIONS: tuple[KleverKeyLockSensorDescription, ...] = (
         translation_key="disconnected_since",
         device_class=SensorDeviceClass.TIMESTAMP,
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
         value_fn=lambda lock: lock.date_disconnected,
     ),
     KleverKeyLockSensorDescription(
@@ -122,7 +121,6 @@ GATEWAY_DESCRIPTIONS: tuple[KleverKeyGatewaySensorDescription, ...] = (
         native_unit_of_measurement=SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
         value_fn=lambda gateway: gateway.wifi_rssi,
     ),
     KleverKeyGatewaySensorDescription(
@@ -137,7 +135,6 @@ GATEWAY_DESCRIPTIONS: tuple[KleverKeyGatewaySensorDescription, ...] = (
         translation_key="connected_since",
         device_class=SensorDeviceClass.TIMESTAMP,
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
         value_fn=lambda gateway: gateway.date_connected,
     ),
     KleverKeyGatewaySensorDescription(
@@ -145,7 +142,6 @@ GATEWAY_DESCRIPTIONS: tuple[KleverKeyGatewaySensorDescription, ...] = (
         translation_key="disconnected_since",
         device_class=SensorDeviceClass.TIMESTAMP,
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
         value_fn=lambda gateway: gateway.date_disconnected,
     ),
 )

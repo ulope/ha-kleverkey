@@ -73,6 +73,9 @@
           "locked": "Verriegelt"
         }
       },
+      "controller_temperature": {
+        "name": "Controller-Temperatur"
+      },
       "weekly_opening_count": {
         "name": "Öffnungen pro Woche"
       },

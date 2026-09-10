@@ -67,7 +67,10 @@ are shown behind that gateway in the device tree.
 | Physical state | `sensor` | `open`, `closed` or `locked` |
 | Weekly openings | `sensor` | |
 | Last activity | `sensor` | Diagnostic timestamp |
-| Signal strength, Temperature, Connected since, Disconnected since, Battery changed | `sensor` | Diagnostic, disabled by default |
+| Controller temperature | `sensor` | Diagnostic, whole °C — the lock's controller, not ambient |
+| Signal strength | `sensor` | Diagnostic, BLE RSSI |
+| Connected since, Disconnected since | `sensor` | Diagnostic timestamps |
+| Battery changed | `sensor` | Diagnostic, disabled by default |
 | Restart | `button` | Restarts the lock |
 
 ### Gateway
@@ -77,10 +80,12 @@ are shown behind that gateway in the device tree.
 | Connectivity | `binary_sensor` | Diagnostic |
 | Update | `binary_sensor` | Diagnostic, on when a firmware update is available |
 | Last activity | `sensor` | Diagnostic timestamp |
-| Signal strength, Connected since, Disconnected since | `sensor` | Diagnostic, disabled by default |
+| Signal strength | `sensor` | Diagnostic, Wi-Fi RSSI |
+| Connected since, Disconnected since | `sensor` | Diagnostic timestamps |
 | Restart | `button` | Restarts the gateway |
 
-Disabled entities can be turned on individually from the device page.
+The battery-changed timestamp is disabled by default and can be turned on from
+the device page.
 
 ## Troubleshooting
 
