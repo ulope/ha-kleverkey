@@ -1,0 +1,101 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "KleverKey API-Schlüssel",
+        "description": "Erstelle im KleverKey-Portal unter Konto → API-Schlüssel einen Schlüssel.",
+        "data": {
+          "api_key": "API-Schlüssel"
+        },
+        "data_description": {
+          "api_key": "Der API-Schlüssel für den Zugriff auf die KleverKey-API."
+        }
+      },
+      "organizations": {
+        "title": "Organisationen",
+        "description": "Wähle die Organisationen, deren Schlösser und Gateways in Home Assistant eingebunden werden sollen.",
+        "data": {
+          "organization_ids": "Organisationen"
+        }
+      },
+      "reauth_confirm": {
+        "title": "KleverKey erneut authentifizieren",
+        "description": "Der gespeicherte API-Schlüssel ist nicht mehr gültig. Bitte gib einen neuen ein.",
+        "data": {
+          "api_key": "API-Schlüssel"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zur KleverKey-API fehlgeschlagen.",
+      "invalid_auth": "Der API-Schlüssel wurde von KleverKey abgelehnt.",
+      "no_organizations": "Dieser API-Schlüssel hat keinen Zugriff auf eine Organisation.",
+      "no_organizations_selected": "Wähle mindestens eine Organisation aus.",
+      "unknown": "Unerwarteter Fehler"
+    },
+    "abort": {
+      "already_configured": "Dieses KleverKey-Konto ist bereits eingerichtet.",
+      "reauth_successful": "Die erneute Authentifizierung war erfolgreich.",
+      "wrong_account": "Der neue API-Schlüssel gehört zu einem anderen KleverKey-Konto."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Organisationen",
+        "description": "Wähle die Organisationen, deren Schlösser und Gateways in Home Assistant eingebunden werden sollen.",
+        "data": {
+          "organization_ids": "Organisationen"
+        }
+      }
+    },
+    "error": {
+      "no_organizations_selected": "Wähle mindestens eine Organisation aus."
+    },
+    "abort": {
+      "cannot_connect": "Verbindung zur KleverKey-API fehlgeschlagen.",
+      "invalid_auth": "Der API-Schlüssel wurde von KleverKey abgelehnt.",
+      "no_organizations": "Dieser API-Schlüssel hat keinen Zugriff auf eine Organisation."
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "emergency": {
+        "name": "Notfall"
+      }
+    },
+    "sensor": {
+      "physical_state": {
+        "name": "Physischer Zustand",
+        "state": {
+          "open": "Offen",
+          "closed": "Geschlossen",
+          "locked": "Verriegelt"
+        }
+      },
+      "controller_temperature": {
+        "name": "Controller-Temperatur"
+      },
+      "weekly_opening_count": {
+        "name": "Öffnungen pro Woche"
+      },
+      "last_activity": {
+        "name": "Letzte Aktivität"
+      },
+      "connected_since": {
+        "name": "Verbunden seit"
+      },
+      "disconnected_since": {
+        "name": "Getrennt seit"
+      },
+      "battery_changed": {
+        "name": "Batterie gewechselt"
+      }
+    }
+  },
+  "exceptions": {
+    "restart_failed": {
+      "message": "Neustart von {name} fehlgeschlagen: {error}"
+    }
+  }
+}

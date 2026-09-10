@@ -1,0 +1,101 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "KleverKey API key",
+        "description": "Create an API key in the KleverKey portal under Account → API keys.",
+        "data": {
+          "api_key": "API key"
+        },
+        "data_description": {
+          "api_key": "The API key used to talk to the KleverKey API."
+        }
+      },
+      "organizations": {
+        "title": "Organizations",
+        "description": "Choose the organizations whose locks and gateways should be added to Home Assistant.",
+        "data": {
+          "organization_ids": "Organizations"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate KleverKey",
+        "description": "The stored API key is no longer valid. Enter a new one.",
+        "data": {
+          "api_key": "API key"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the KleverKey API.",
+      "invalid_auth": "The API key was rejected by KleverKey.",
+      "no_organizations": "This API key has no access to any organization.",
+      "no_organizations_selected": "Select at least one organization.",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "This KleverKey account is already configured.",
+      "reauth_successful": "Re-authentication was successful.",
+      "wrong_account": "The new API key belongs to a different KleverKey account."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Organizations",
+        "description": "Choose the organizations whose locks and gateways should be added to Home Assistant.",
+        "data": {
+          "organization_ids": "Organizations"
+        }
+      }
+    },
+    "error": {
+      "no_organizations_selected": "Select at least one organization."
+    },
+    "abort": {
+      "cannot_connect": "Failed to connect to the KleverKey API.",
+      "invalid_auth": "The API key was rejected by KleverKey.",
+      "no_organizations": "This API key has no access to any organization."
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "emergency": {
+        "name": "Emergency"
+      }
+    },
+    "sensor": {
+      "physical_state": {
+        "name": "Physical state",
+        "state": {
+          "open": "Open",
+          "closed": "Closed",
+          "locked": "Locked"
+        }
+      },
+      "controller_temperature": {
+        "name": "Controller temperature"
+      },
+      "weekly_opening_count": {
+        "name": "Weekly openings"
+      },
+      "last_activity": {
+        "name": "Last activity"
+      },
+      "connected_since": {
+        "name": "Connected since"
+      },
+      "disconnected_since": {
+        "name": "Disconnected since"
+      },
+      "battery_changed": {
+        "name": "Battery changed"
+      }
+    }
+  },
+  "exceptions": {
+    "restart_failed": {
+      "message": "Failed to restart {name}: {error}"
+    }
+  }
+}

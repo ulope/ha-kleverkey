@@ -1,0 +1,12 @@
+{
+  "domain": "kleverkey",
+  "name": "KleverKey",
+  "codeowners": ["@ulope"],
+  "config_flow": true,
+  "documentation": "https://github.com/ulope/ha-kleverkey",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/ulope/ha-kleverkey/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}
