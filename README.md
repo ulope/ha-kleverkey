@@ -97,6 +97,12 @@ uv pip install -r requirements_test.txt
 .venv/bin/ruff check .
 ```
 
+## Brand assets
+
+`custom_components/kleverkey/brand/` holds a **placeholder** key icon so that
+HACS validation passes. It is a generic glyph, not KleverKey artwork — see the
+README in that directory for how to replace it.
+
 ## Disclaimer
 
 This is an unofficial integration and is not affiliated with, endorsed by, or
