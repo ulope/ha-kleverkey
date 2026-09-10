@@ -58,6 +58,14 @@
       "no_organizations": "This API key has no access to any organization."
     }
   },
+  "device": {
+    "lock": {
+      "name": "Lock {name}"
+    },
+    "gateway": {
+      "name": "Gateway {name}"
+    }
+  },
   "entity": {
     "binary_sensor": {
       "emergency": {
@@ -82,11 +90,11 @@
       "last_activity": {
         "name": "Last activity"
       },
-      "connected_since": {
-        "name": "Connected since"
+      "last_connected": {
+        "name": "Last connected"
       },
-      "disconnected_since": {
-        "name": "Disconnected since"
+      "last_disconnected": {
+        "name": "Last disconnected"
       },
       "battery_changed": {
         "name": "Battery changed"

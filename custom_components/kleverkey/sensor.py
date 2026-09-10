@@ -101,14 +101,14 @@ LOCK_DESCRIPTIONS: tuple[KleverKeyLockSensorDescription, ...] = (
     ),
     KleverKeyLockSensorDescription(
         key="connected_since",
-        translation_key="connected_since",
+        translation_key="last_connected",
         device_class=SensorDeviceClass.TIMESTAMP,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda lock: lock.date_connected,
     ),
     KleverKeyLockSensorDescription(
         key="disconnected_since",
-        translation_key="disconnected_since",
+        translation_key="last_disconnected",
         device_class=SensorDeviceClass.TIMESTAMP,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda lock: lock.date_disconnected,
@@ -141,14 +141,14 @@ GATEWAY_DESCRIPTIONS: tuple[KleverKeyGatewaySensorDescription, ...] = (
     ),
     KleverKeyGatewaySensorDescription(
         key="connected_since",
-        translation_key="connected_since",
+        translation_key="last_connected",
         device_class=SensorDeviceClass.TIMESTAMP,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda gateway: gateway.date_connected,
     ),
     KleverKeyGatewaySensorDescription(
         key="disconnected_since",
-        translation_key="disconnected_since",
+        translation_key="last_disconnected",
         device_class=SensorDeviceClass.TIMESTAMP,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda gateway: gateway.date_disconnected,

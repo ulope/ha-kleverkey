@@ -70,12 +70,12 @@ async def test_devices(
     lock = device_registry.async_get_device({(DOMAIN, "lock_100")})
 
     assert gateway is not None
-    assert gateway.name == "Hallway Gateway"
+    assert gateway.name == "Gateway Hallway"
     assert gateway.model == "Wi-Fi Gateway"
     assert gateway.sw_version == "1.2.1"
 
     assert lock is not None
-    assert lock.name == "Front Door"
+    assert lock.name == "Lock Front Door"
     assert lock.model == "Lock B1"
     assert lock.sw_version == "1.7.1"
     assert lock.via_device_id == gateway.id
@@ -101,3 +101,18 @@ async def test_device_removal(
         identifiers={(DOMAIN, "lock_999")},
     )
     assert await async_remove_config_entry_device(hass, mock_config_entry, stale)
+
+
+async def test_device_names_are_translated(
+    hass: HomeAssistant, mock_api: aioresponses, mock_config_entry: MockConfigEntry
+) -> None:
+    """Device names carry a localized type prefix."""
+    await hass.config.async_update(language="de")
+    await setup_integration(hass, mock_config_entry)
+
+    device_registry = dr.async_get(hass)
+    lock = device_registry.async_get_device({(DOMAIN, "lock_100")})
+    gateway = device_registry.async_get_device({(DOMAIN, "gateway_200")})
+
+    assert lock.name == "Schloss Front Door"
+    assert gateway.name == "Gateway Hallway"

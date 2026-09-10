@@ -58,6 +58,14 @@
       "no_organizations": "Dieser API-Schlüssel hat keinen Zugriff auf eine Organisation."
     }
   },
+  "device": {
+    "lock": {
+      "name": "Schloss {name}"
+    },
+    "gateway": {
+      "name": "Gateway {name}"
+    }
+  },
   "entity": {
     "binary_sensor": {
       "emergency": {
@@ -82,11 +90,11 @@
       "last_activity": {
         "name": "Letzte Aktivität"
       },
-      "connected_since": {
-        "name": "Verbunden seit"
+      "last_connected": {
+        "name": "Zuletzt verbunden"
       },
-      "disconnected_since": {
-        "name": "Getrennt seit"
+      "last_disconnected": {
+        "name": "Zuletzt getrennt"
       },
       "battery_changed": {
         "name": "Batterie gewechselt"
