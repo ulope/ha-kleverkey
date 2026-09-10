@@ -51,8 +51,11 @@ The integration polls the KleverKey API once a minute.
 
 ## Entities
 
-Each lock and each gateway becomes a device. Locks that are linked to a gateway
-are shown behind that gateway in the device tree.
+Each lock and each gateway becomes a device, named with a localized type
+prefix — `Lock <name>` and `Gateway <name>` in English, `Schloss <name>` and
+`Gateway <name>` in German — so entity IDs read like
+`sensor.lock_front_door_battery`. Locks that are linked to a gateway are shown
+behind that gateway in the device tree.
 
 ### Lock
 
@@ -70,7 +73,7 @@ are shown behind that gateway in the device tree.
 | Last activity | `sensor` | Diagnostic timestamp |
 | Controller temperature | `sensor` | Diagnostic, whole °C — the lock's controller, not ambient |
 | Signal strength | `sensor` | Diagnostic, BLE RSSI |
-| Connected since, Disconnected since | `sensor` | Diagnostic timestamps |
+| Last connected, Last disconnected | `sensor` | Diagnostic, when the lock last connected and last dropped — both are past events, so a connected lock still shows a last-disconnected time |
 | Battery changed | `sensor` | Diagnostic, disabled by default |
 | Restart | `button` | Restarts the lock |
 
@@ -82,11 +85,29 @@ are shown behind that gateway in the device tree.
 | Update | `binary_sensor` | Diagnostic, on when a firmware update is available |
 | Last activity | `sensor` | Diagnostic timestamp |
 | Signal strength | `sensor` | Diagnostic, Wi-Fi RSSI |
-| Connected since, Disconnected since | `sensor` | Diagnostic timestamps |
+| Last connected, Last disconnected | `sensor` | Diagnostic, both are past events |
 | Restart | `button` | Restarts the gateway |
 
 The battery-changed timestamp is disabled by default and can be turned on from
 the device page.
+
+## Notes
+
+`Last activity` tracks the timestamp KleverKey reports for the device, which
+updates every few minutes as the gateway checks in — locks behind the same
+gateway share the value. Each update is a state change, so the entity produces
+regular logbook entries. To quiet it down, exclude it in `configuration.yaml`:
+
+```yaml
+recorder:
+  exclude:
+    entity_globs:
+      - sensor.*_last_activity
+logbook:
+  exclude:
+    entity_globs:
+      - sensor.*_last_activity
+```
 
 ## Troubleshooting
 
@@ -108,6 +129,24 @@ uv pip install -r requirements_test.txt
 `custom_components/kleverkey/brand/` holds a **placeholder** key icon so that
 HACS validation passes. It is a generic glyph, not KleverKey artwork — see the
 README in that directory for how to replace it.
+
+## Releasing
+
+HACS reads `custom_components/kleverkey/` out of the repository at the release
+tag, and Home Assistant shows the `version` from `manifest.json`, so the two
+have to agree. The **Release** workflow keeps them in step: run it from the
+Actions tab on `main` with a version like `0.2.0` (no leading `v`) and it will
+
+1. refuse to run off a non-default branch, or if the tag already exists,
+2. run ruff and the test suite,
+3. write the version into `manifest.json` and commit it,
+4. tag `v0.2.0` at that commit and publish a GitHub release with generated notes.
+
+The tag is created *after* the version bump, so the tree at the tag carries the
+right manifest. Note that HACS needs a full release, not just a tag.
+
+If `main` is protected against direct pushes, grant the workflow an exception
+or bump `manifest.json` by hand in a PR before tagging.
 
 ## Disclaimer
 

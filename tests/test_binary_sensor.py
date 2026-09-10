@@ -21,14 +21,14 @@ from .const import GATEWAY, LOCK
 @pytest.mark.parametrize(
     ("entity_id", "expected"),
     [
-        ("binary_sensor.front_door_lock", STATE_OFF),
-        ("binary_sensor.front_door_door", STATE_OFF),
-        ("binary_sensor.front_door_connectivity", STATE_ON),
-        ("binary_sensor.front_door_battery", STATE_ON),
-        ("binary_sensor.front_door_emergency", STATE_OFF),
-        ("binary_sensor.front_door_update", STATE_ON),
-        ("binary_sensor.hallway_gateway_connectivity", STATE_ON),
-        ("binary_sensor.hallway_gateway_update", STATE_OFF),
+        ("binary_sensor.lock_front_door_lock", STATE_OFF),
+        ("binary_sensor.lock_front_door_door", STATE_OFF),
+        ("binary_sensor.lock_front_door_connectivity", STATE_ON),
+        ("binary_sensor.lock_front_door_battery", STATE_ON),
+        ("binary_sensor.lock_front_door_emergency", STATE_OFF),
+        ("binary_sensor.lock_front_door_update", STATE_ON),
+        ("binary_sensor.gateway_hallway_connectivity", STATE_ON),
+        ("binary_sensor.gateway_hallway_update", STATE_OFF),
     ],
 )
 async def test_states(
@@ -54,8 +54,8 @@ async def test_open_lock(
         mock_api_responses(mocked, locks=[{**LOCK, "physicalState": 1}])
         await setup_integration(hass, mock_config_entry)
 
-    assert hass.states.get("binary_sensor.front_door_lock").state == STATE_ON
-    assert hass.states.get("binary_sensor.front_door_door").state == STATE_ON
+    assert hass.states.get("binary_sensor.lock_front_door_lock").state == STATE_ON
+    assert hass.states.get("binary_sensor.lock_front_door_door").state == STATE_ON
 
 
 async def test_unknown_physical_state(
@@ -66,8 +66,8 @@ async def test_unknown_physical_state(
         mock_api_responses(mocked, locks=[{**LOCK, "physicalState": 0}])
         await setup_integration(hass, mock_config_entry)
 
-    assert hass.states.get("binary_sensor.front_door_lock").state == STATE_UNKNOWN
-    assert hass.states.get("binary_sensor.front_door_door").state == STATE_UNKNOWN
+    assert hass.states.get("binary_sensor.lock_front_door_lock").state == STATE_UNKNOWN
+    assert hass.states.get("binary_sensor.lock_front_door_door").state == STATE_UNKNOWN
 
 
 async def test_removed_lock_becomes_unavailable(
@@ -80,7 +80,8 @@ async def test_removed_lock_becomes_unavailable(
         mock_api_responses(mocked)
         await setup_integration(hass, mock_config_entry)
         assert (
-            hass.states.get("binary_sensor.front_door_connectivity").state == STATE_ON
+            hass.states.get("binary_sensor.lock_front_door_connectivity").state
+            == STATE_ON
         )
 
     with aioresponses() as mocked:
@@ -90,11 +91,11 @@ async def test_removed_lock_becomes_unavailable(
         await hass.async_block_till_done(wait_background_tasks=True)
 
     assert (
-        hass.states.get("binary_sensor.front_door_connectivity").state
+        hass.states.get("binary_sensor.lock_front_door_connectivity").state
         == STATE_UNAVAILABLE
     )
     assert (
-        hass.states.get("binary_sensor.hallway_gateway_connectivity").state == STATE_ON
+        hass.states.get("binary_sensor.gateway_hallway_connectivity").state == STATE_ON
     )
 
 
@@ -107,7 +108,7 @@ async def test_new_lock_is_added(
     with aioresponses() as mocked:
         mock_api_responses(mocked)
         await setup_integration(hass, mock_config_entry)
-        assert hass.states.get("binary_sensor.back_door_connectivity") is None
+        assert hass.states.get("binary_sensor.lock_back_door_connectivity") is None
 
     new_lock = {**LOCK, "id": 101, "displayName": "Back Door", "name": "Back Door"}
     with aioresponses() as mocked:
@@ -116,4 +117,6 @@ async def test_new_lock_is_added(
         async_fire_time_changed(hass)
         await hass.async_block_till_done(wait_background_tasks=True)
 
-    assert hass.states.get("binary_sensor.back_door_connectivity").state == STATE_ON
+    assert (
+        hass.states.get("binary_sensor.lock_back_door_connectivity").state == STATE_ON
+    )

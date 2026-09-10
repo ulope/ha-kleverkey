@@ -16,17 +16,17 @@ from .const import LOCK
 @pytest.mark.parametrize(
     ("entity_id", "expected"),
     [
-        ("sensor.front_door_physical_state", "locked"),
-        ("sensor.front_door_weekly_openings", "12.5"),
-        ("sensor.front_door_controller_temperature", "21"),
-        ("sensor.front_door_battery", "100"),
-        ("sensor.front_door_signal_strength", "-67"),
-        ("sensor.front_door_last_activity", "2026-02-03T05:06:07+00:00"),
-        ("sensor.front_door_connected_since", "2026-02-03T04:05:06+00:00"),
-        ("sensor.front_door_disconnected_since", STATE_UNKNOWN),
-        ("sensor.hallway_gateway_signal_strength", "-55"),
-        ("sensor.hallway_gateway_last_activity", "2026-02-03T05:00:00+00:00"),
-        ("sensor.hallway_gateway_connected_since", "2026-02-01T00:00:00+00:00"),
+        ("sensor.lock_front_door_physical_state", "locked"),
+        ("sensor.lock_front_door_weekly_openings", "12.5"),
+        ("sensor.lock_front_door_controller_temperature", "21"),
+        ("sensor.lock_front_door_battery", "100"),
+        ("sensor.lock_front_door_signal_strength", "-67"),
+        ("sensor.lock_front_door_last_activity", "2026-02-03T05:06:07+00:00"),
+        ("sensor.lock_front_door_last_connected", "2026-02-03T04:05:06+00:00"),
+        ("sensor.lock_front_door_last_disconnected", STATE_UNKNOWN),
+        ("sensor.gateway_hallway_signal_strength", "-55"),
+        ("sensor.gateway_hallway_last_activity", "2026-02-03T05:00:00+00:00"),
+        ("sensor.gateway_hallway_last_connected", "2026-02-01T00:00:00+00:00"),
     ],
 )
 async def test_states(
@@ -51,10 +51,10 @@ async def test_battery_changed_is_disabled_by_default(
     await setup_integration(hass, mock_config_entry)
 
     entity_registry = er.async_get(hass)
-    entry = entity_registry.async_get("sensor.front_door_battery_changed")
+    entry = entity_registry.async_get("sensor.lock_front_door_battery_changed")
     assert entry is not None
     assert entry.disabled_by is er.RegistryEntryDisabler.INTEGRATION
-    assert hass.states.get("sensor.front_door_battery_changed") is None
+    assert hass.states.get("sensor.lock_front_door_battery_changed") is None
 
 
 async def test_diagnostic_sensors_are_enabled(
@@ -65,13 +65,13 @@ async def test_diagnostic_sensors_are_enabled(
 
     entity_registry = er.async_get(hass)
     for entity_id in (
-        "sensor.front_door_signal_strength",
-        "sensor.front_door_controller_temperature",
-        "sensor.front_door_connected_since",
-        "sensor.front_door_disconnected_since",
-        "sensor.hallway_gateway_signal_strength",
-        "sensor.hallway_gateway_connected_since",
-        "sensor.hallway_gateway_disconnected_since",
+        "sensor.lock_front_door_signal_strength",
+        "sensor.lock_front_door_controller_temperature",
+        "sensor.lock_front_door_last_connected",
+        "sensor.lock_front_door_last_disconnected",
+        "sensor.gateway_hallway_signal_strength",
+        "sensor.gateway_hallway_last_connected",
+        "sensor.gateway_hallway_last_disconnected",
     ):
         entry = entity_registry.async_get(entity_id)
         assert entry is not None, entity_id
@@ -84,11 +84,11 @@ async def test_controller_temperature(
     """The controller temperature is whole degrees Celsius."""
     await setup_integration(hass, mock_config_entry)
 
-    state = hass.states.get("sensor.front_door_controller_temperature")
+    state = hass.states.get("sensor.lock_front_door_controller_temperature")
     assert state.state == "21"
     assert state.attributes["unit_of_measurement"] == "°C"
     assert state.attributes["device_class"] == "temperature"
-    assert state.name == "Front Door Controller temperature"
+    assert state.name == "Lock Front Door Controller temperature"
 
 
 async def test_missing_values_are_unknown(
@@ -100,8 +100,12 @@ async def test_missing_values_are_unknown(
         mock_api_responses(mocked, locks=[{**lock, "physicalState": 0}])
         await setup_integration(hass, mock_config_entry)
 
-    assert hass.states.get("sensor.front_door_weekly_openings").state == STATE_UNKNOWN
-    assert hass.states.get("sensor.front_door_physical_state").state == STATE_UNKNOWN
+    assert (
+        hass.states.get("sensor.lock_front_door_weekly_openings").state == STATE_UNKNOWN
+    )
+    assert (
+        hass.states.get("sensor.lock_front_door_physical_state").state == STATE_UNKNOWN
+    )
 
 
 async def test_physical_state_options(
@@ -110,7 +114,7 @@ async def test_physical_state_options(
     """The physical state sensor advertises its possible values."""
     await setup_integration(hass, mock_config_entry)
 
-    state = hass.states.get("sensor.front_door_physical_state")
+    state = hass.states.get("sensor.lock_front_door_physical_state")
     assert state.attributes["options"] == ["open", "closed", "locked"]
 
 
@@ -120,7 +124,7 @@ async def test_battery_level(
     """The powerSource field is exposed as a battery percentage."""
     await setup_integration(hass, mock_config_entry)
 
-    state = hass.states.get("sensor.front_door_battery")
+    state = hass.states.get("sensor.lock_front_door_battery")
     assert state.state == "100"
     assert state.attributes["device_class"] == "battery"
     assert state.attributes["unit_of_measurement"] == "%"
@@ -135,4 +139,4 @@ async def test_battery_level_absent(
         mock_api_responses(mocked, locks=[lock])
         await setup_integration(hass, mock_config_entry)
 
-    assert hass.states.get("sensor.front_door_battery").state == STATE_UNKNOWN
+    assert hass.states.get("sensor.lock_front_door_battery").state == STATE_UNKNOWN

@@ -21,11 +21,11 @@ from .const import API_KEY
     ("entity_id", "url"),
     [
         (
-            "button.front_door_restart",
+            "button.lock_front_door_restart",
             f"{API_BASE_URL}/api/v1/organizations/1/locks/100/restart",
         ),
         (
-            "button.hallway_gateway_restart",
+            "button.gateway_hallway_restart",
             f"{API_BASE_URL}/api/v1/organizations/1/gateways/200/restart",
         ),
     ],
@@ -64,7 +64,7 @@ async def test_press_error(
         await hass.services.async_call(
             BUTTON_DOMAIN,
             SERVICE_PRESS,
-            {ATTR_ENTITY_ID: "button.front_door_restart"},
+            {ATTR_ENTITY_ID: "button.lock_front_door_restart"},
             blocking=True,
         )
 
@@ -79,10 +79,10 @@ async def test_gateway_press_error(
         exception=TimeoutError,
     )
 
-    with pytest.raises(HomeAssistantError, match="Failed to restart Hallway Gateway"):
+    with pytest.raises(HomeAssistantError, match="Failed to restart Hallway"):
         await hass.services.async_call(
             BUTTON_DOMAIN,
             SERVICE_PRESS,
-            {ATTR_ENTITY_ID: "button.hallway_gateway_restart"},
+            {ATTR_ENTITY_ID: "button.gateway_hallway_restart"},
             blocking=True,
         )

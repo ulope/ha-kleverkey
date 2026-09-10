@@ -144,11 +144,11 @@ async def test_parses_real_locks(hass: HomeAssistant) -> None:
 @pytest.mark.parametrize(
     ("lock_id", "entity_id", "expected"),
     [
-        (4050, "binary_sensor.b38_toilette_lock", "on"),
-        (4050, "binary_sensor.b38_toilette_door", "off"),
-        (4050, "sensor.b38_toilette_controller_temperature", "18"),
-        (4768, "sensor.b38_topfern_physical_state", "unknown"),
-        (4051, "sensor.b42_rolltor_physical_state", "open"),
+        (4050, "binary_sensor.lock_b38_toilette_lock", "on"),
+        (4050, "binary_sensor.lock_b38_toilette_door", "off"),
+        (4050, "sensor.lock_b38_toilette_controller_temperature", "18"),
+        (4768, "sensor.lock_b38_topfern_physical_state", "unknown"),
+        (4051, "sensor.lock_b42_rolltor_physical_state", "open"),
     ],
 )
 async def test_entities_from_real_locks(
@@ -179,5 +179,5 @@ async def test_devices_from_real_locks(
     device_registry = dr.async_get(hass)
     device = device_registry.async_get_device({(DOMAIN, "lock_4050")})
     assert device is not None
-    assert device.name == "B38 Toilette"
+    assert device.name == "Lock B38 Toilette"
     assert device.serial_number == "C0E78B3011ED0000"

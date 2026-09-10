@@ -31,7 +31,8 @@ class KleverKeyLockEntity(CoordinatorEntity[KleverKeyDataUpdateCoordinator]):
             identifiers={(DOMAIN, f"lock_{lock_id}")},
             manufacturer=MANUFACTURER,
             model=lock.model,
-            name=lock.name,
+            translation_key="lock",
+            translation_placeholders={"name": lock.name},
             serial_number=lock.hex_id,
             sw_version=lock.firmware_version_string,
         )
@@ -73,7 +74,8 @@ class KleverKeyGatewayEntity(CoordinatorEntity[KleverKeyDataUpdateCoordinator]):
             identifiers={(DOMAIN, f"gateway_{gateway_id}")},
             manufacturer=MANUFACTURER,
             model=gateway.model,
-            name=gateway.name,
+            translation_key="gateway",
+            translation_placeholders={"name": gateway.name},
             serial_number=gateway.hex_id,
             sw_version=gateway.firmware_version_string,
         )
