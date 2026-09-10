@@ -1,0 +1,4 @@
+homeassistant~=2026.2.0
+pytest-homeassistant-custom-component~=0.13.0
+aioresponses>=0.7.6
+ruff>=0.9
