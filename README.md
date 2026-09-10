@@ -130,6 +130,24 @@ uv pip install -r requirements_test.txt
 HACS validation passes. It is a generic glyph, not KleverKey artwork — see the
 README in that directory for how to replace it.
 
+## Releasing
+
+HACS reads `custom_components/kleverkey/` out of the repository at the release
+tag, and Home Assistant shows the `version` from `manifest.json`, so the two
+have to agree. The **Release** workflow keeps them in step: run it from the
+Actions tab on `main` with a version like `0.2.0` (no leading `v`) and it will
+
+1. refuse to run off a non-default branch, or if the tag already exists,
+2. run ruff and the test suite,
+3. write the version into `manifest.json` and commit it,
+4. tag `v0.2.0` at that commit and publish a GitHub release with generated notes.
+
+The tag is created *after* the version bump, so the tree at the tag carries the
+right manifest. Note that HACS needs a full release, not just a tag.
+
+If `main` is protected against direct pushes, grant the workflow an exception
+or bump `manifest.json` by hand in a PR before tagging.
+
 ## Disclaimer
 
 This is an unofficial integration and is not affiliated with, endorsed by, or
